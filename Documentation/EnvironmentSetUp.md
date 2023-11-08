@@ -31,3 +31,8 @@
 6. Create Databricks Workspace
 
    ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/4ac12ce0-9689-4a9a-b539-9f3cdc2dd034)
+
+7. Create Azure Synapse Analytics Service
+
+   ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/5449882e-10be-4f5b-b96f-af50973c8e6b)
+
