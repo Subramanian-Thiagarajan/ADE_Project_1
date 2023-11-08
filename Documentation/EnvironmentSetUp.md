@@ -23,3 +23,7 @@
 4. Create Azure Data Factory to ingest data from source
 
    ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/e1fd0db1-077a-4b1f-ad92-4c4fe77f95af)
+
+5. Create ADLS Gen 2 from the Storage Accounts
+
+   ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/c97950c7-afed-461d-a5ff-708061b461dc)
