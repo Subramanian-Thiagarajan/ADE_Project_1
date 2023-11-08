@@ -1,0 +1,19 @@
+{
+	"name": "dataset_adls_bronze_sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linked_service_adls_ade_project",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "bronze"
+			},
+			"compressionCodec": "none"
+		},
+		"schema": []
+	}
+}
