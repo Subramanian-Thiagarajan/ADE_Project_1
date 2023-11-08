@@ -1,0 +1,19 @@
+{
+	"name": "linked_service_databricks_workspace",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-2508891507310711.11.azuredatabricks.net",
+			"accessToken": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "linked_service_key_vault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "adb-access-token"
+			},
+			"existingClusterId": "1108-110136-nzdubyah"
+		}
+	}
+}
