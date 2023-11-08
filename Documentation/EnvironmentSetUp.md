@@ -27,3 +27,7 @@
 5. Create ADLS Gen 2 from the Storage Accounts
 
    ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/c97950c7-afed-461d-a5ff-708061b461dc)
+
+6. Create Databricks Workspace
+
+   ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/4ac12ce0-9689-4a9a-b539-9f3cdc2dd034)
