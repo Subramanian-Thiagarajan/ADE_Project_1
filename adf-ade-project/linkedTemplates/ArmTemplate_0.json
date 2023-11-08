@@ -68,14 +68,30 @@
 					"referenceName": "linked_service_adls_ade_project",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"schemaName": {
+						"type": "string"
+					},
+					"tableName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "Parquet",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@concat(dataset().tableName,'.parquet')",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@concat(dataset().schemaName,'/',dataset().tableName)",
+							"type": "Expression"
+						},
 						"fileSystem": "bronze"
 					},
-					"compressionCodec": "none"
+					"compressionCodec": "snappy"
 				},
 				"schema": []
 			},
@@ -107,6 +123,24 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/dataset_lookup_source_tables')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "linked_service_source_db",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/linked_service_source_db')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataset_source_sql')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -114,6 +148,11 @@
 				"linkedServiceName": {
 					"referenceName": "linked_service_source_db",
 					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"tableName": {
+						"type": "String"
+					}
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
@@ -160,7 +199,10 @@
 				],
 				"typeProperties": {
 					"schema": "SalesLT",
-					"table": "Address"
+					"table": {
+						"value": "@dataset().tableName",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": [
@@ -174,8 +216,8 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy from source to bronze sink",
-						"type": "Copy",
+						"name": "Get All Table names",
+						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -188,42 +230,104 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select schema_name(t.schema_id) as schema_name,\n       t.name as table_name\nfrom sys.tables t\nwhere schema_name(t.schema_id) = 'SalesLT'\norder by schema_name,\n         table_name;",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "dataset_source_sql",
+							"dataset": {
+								"referenceName": "dataset_lookup_source_tables",
 								"type": "DatasetReference",
 								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "For each table",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get All Table names",
+								"dependencyConditions": [
+									"Succeeded"
+								]
 							}
 						],
-						"outputs": [
-							{
-								"referenceName": "dataset_adls_bronze_sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get All Table names').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy from source to bronze sink",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "dataset_source_sql",
+											"type": "DatasetReference",
+											"parameters": {
+												"tableName": {
+													"value": "@item().TableName",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "dataset_adls_bronze_sink",
+											"type": "DatasetReference",
+											"parameters": {
+												"schemaName": {
+													"value": "@item().SchemaName",
+													"type": "Expression"
+												},
+												"tableName": {
+													"value": "@item().TableName",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
 					}
 				],
 				"policy": {
@@ -232,6 +336,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/dataset_lookup_source_tables')]",
 				"[concat(variables('factoryId'), '/datasets/dataset_source_sql')]",
 				"[concat(variables('factoryId'), '/datasets/dataset_adls_bronze_sink')]"
 			]
