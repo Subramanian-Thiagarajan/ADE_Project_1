@@ -303,7 +303,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"tableName": {
-													"value": "@item().TableName",
+													"value": "@item().table_name",
 													"type": "Expression"
 												}
 											}
@@ -315,11 +315,11 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"schemaName": {
-													"value": "@item().SchemaName",
+													"value": "@item().schema_name",
 													"type": "Expression"
 												},
 												"tableName": {
-													"value": "@item().TableName",
+													"value": "@item().table_name",
 													"type": "Expression"
 												}
 											}
