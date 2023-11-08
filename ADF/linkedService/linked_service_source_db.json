@@ -1,0 +1,18 @@
+{
+	"name": "linked_service_source_db",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=source-db-server.database.windows.net;Initial Catalog=sqldb-source-db;User ID=admin-source",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "linked_service_key_vault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sql-server-password"
+			}
+		}
+	}
+}
