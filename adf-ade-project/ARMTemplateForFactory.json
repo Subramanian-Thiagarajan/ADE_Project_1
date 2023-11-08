@@ -20,19 +20,104 @@
 			"type": "string",
 			"defaultValue": "https://adlsadeproject.dfs.core.windows.net/"
 		},
-		"linked_service_key_vault_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://akv-ade-project.vault.azure.net/"
-		},
 		"linked_service_databricks_workspace_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "1108-110136-nzdubyah"
+		},
+		"linked_service_key_vault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://akv-ade-project.vault.azure.net/"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Data Transformation')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "copy - source to bronze sink",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Bronze to Silver",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Repos/subbuthiagu@gmail.com/ADE_Project_1/DBW/First Level Transformation"
+						},
+						"linkedServiceName": {
+							"referenceName": "linked_service_databricks_workspace",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Silver to Gold",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Bronze to Silver",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Repos/subbuthiagu@gmail.com/ADE_Project_1/DBW/Second Level Transformation"
+						},
+						"linkedServiceName": {
+							"referenceName": "linked_service_databricks_workspace",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/copy - source to bronze sink')]",
+				"[concat(variables('factoryId'), '/linkedServices/linked_service_databricks_workspace')]"
+			]
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/copy - source to bronze sink')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -310,6 +395,30 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/linked_service_databricks_workspace')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-2508891507310711.11.azuredatabricks.net",
+					"accessToken": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "linked_service_key_vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "adb-access-token"
+					},
+					"existingClusterId": "[parameters('linked_service_databricks_workspace_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/linked_service_key_vault')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/linked_service_key_vault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -339,30 +448,6 @@
 						},
 						"secretName": "sql-server-password"
 					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/linked_service_key_vault')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/linked_service_databricks_workspace')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureDatabricks",
-				"typeProperties": {
-					"domain": "https://adb-2508891507310711.11.azuredatabricks.net",
-					"accessToken": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "linked_service_key_vault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "adb-access-token"
-					},
-					"existingClusterId": "[parameters('linked_service_databricks_workspace_properties_typeProperties_existingClusterId')]"
 				}
 			},
 			"dependsOn": [

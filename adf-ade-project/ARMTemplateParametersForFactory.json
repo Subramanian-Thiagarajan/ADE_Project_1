@@ -14,11 +14,11 @@
 		"linked_service_adls_ade_project_properties_typeProperties_url": {
 			"value": "https://adlsadeproject.dfs.core.windows.net/"
 		},
-		"linked_service_key_vault_properties_typeProperties_baseUrl": {
-			"value": "https://akv-ade-project.vault.azure.net/"
-		},
 		"linked_service_databricks_workspace_properties_typeProperties_existingClusterId": {
 			"value": "1108-110136-nzdubyah"
+		},
+		"linked_service_key_vault_properties_typeProperties_baseUrl": {
+			"value": "https://akv-ade-project.vault.azure.net/"
 		}
 	}
 }
