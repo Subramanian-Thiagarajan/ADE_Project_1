@@ -5,6 +5,11 @@
 			"referenceName": "linked_service_source_db",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"tableName": {
+				"type": "String"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
@@ -50,7 +55,10 @@
 		],
 		"typeProperties": {
 			"schema": "SalesLT",
-			"table": "Address"
+			"table": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
 		}
 	}
 }

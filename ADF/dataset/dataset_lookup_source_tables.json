@@ -1,0 +1,12 @@
+{
+	"name": "dataset_lookup_source_tables",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linked_service_source_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
