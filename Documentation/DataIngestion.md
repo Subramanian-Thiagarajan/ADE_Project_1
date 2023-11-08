@@ -33,4 +33,10 @@
 
 - Create a Pipeline to copy data from Source to Bronze Sink
 
-  ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/21c3b0a1-ab83-483a-b89c-f236d6be0ad7)
+  ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/04779801-f6df-41b8-864d-e9394733b34d)
+
+- Bronze Layer Structure
+  
+  ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/b68e2739-5f15-416b-b258-c53edc526f51)
+
+
