@@ -1,0 +1,17 @@
+{
+	"name": "SP_CreateView",
+	"properties": {
+		"content": {
+			"query": "USE sya_gold_db\nGO\n\nCREATE OR ALTER PROC CreateSQLServerless_gold @ViewName nvarchar(100)\nAS\nBEGIN\n\nDECLARE @statement VARCHAR(MAX)\n\nSET @statement = N'CREATE OR ALTER VIEW ' + @ViewName + ' AS\n    SELECT\n    *\n    FROM\n    OPENROWSET(\n        BULK ''https://adlsadeproject.dfs.core.windows.net/gold/SalesLT/' + @ViewName + '/'',\n        FORMAT = ''DELTA''\n    ) AS [result]\n'\nEXEC (@statement)\nEND\nGO\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "sya_gold_db",
+				"poolName": "Built-in"
+			},
+			"resultLimit": -1
+		},
+		"type": "SqlQuery"
+	}
+}
