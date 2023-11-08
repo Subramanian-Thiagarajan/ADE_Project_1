@@ -3,8 +3,8 @@
 ## Project Architecture and Phases
 
 1. Environment Setup
-2. Extraction and Ingestion
-3. Transformation
-4. Loading
-5. Reporting
-6. Pipeline Testing
+2. Extraction and Ingestion - ADF and ADLS
+3. Transformation - ADLS and Azure Databricks
+4. Loading - Azure Synapse Analytics
+
+Source - Official SalesLT Microsoft table loaded into Azure SQL DB
