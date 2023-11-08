@@ -10,10 +10,19 @@
 - Setup Github or Azure DevOps to track the changes and for version control
 
 - Integration Run Time - default
+  
   ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/dae38b35-c777-414c-b086-3ba170749cb3)
 
 - Add a pipeline
+  
   ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/1ea2af56-f8d5-410c-9a4e-bac02e93d735)
 
 - Create Linked Service - Azure Key Vault, Source SQL Database
+  
   ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/723178ca-b730-4297-9aa9-23208084afd8)
+
+  ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/ae1c42c2-c68a-4b9d-b1b9-16c2a806bfb1)
+
+- Create Datasets to reference the actual data in sql db
+
+  ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/3072f7a0-5425-4373-af2b-027d9a4f4698)
