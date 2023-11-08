@@ -23,6 +23,10 @@
 		"linked_service_key_vault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://akv-ade-project.vault.azure.net/"
+		},
+		"linked_service_databricks_workspace_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1108-110136-nzdubyah"
 		}
 	},
 	"variables": {
@@ -335,6 +339,30 @@
 						},
 						"secretName": "sql-server-password"
 					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/linked_service_key_vault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/linked_service_databricks_workspace')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-2508891507310711.11.azuredatabricks.net",
+					"accessToken": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "linked_service_key_vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "adb-access-token"
+					},
+					"existingClusterId": "[parameters('linked_service_databricks_workspace_properties_typeProperties_existingClusterId')]"
 				}
 			},
 			"dependsOn": [

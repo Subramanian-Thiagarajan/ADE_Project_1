@@ -24,6 +24,10 @@
 			"type": "string",
 			"defaultValue": "https://akv-ade-project.vault.azure.net/"
 		},
+		"linked_service_databricks_workspace_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1108-110136-nzdubyah"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -62,6 +66,9 @@
 					},
 					"linked_service_key_vault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('linked_service_key_vault_properties_typeProperties_baseUrl')]"
+					},
+					"linked_service_databricks_workspace_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('linked_service_databricks_workspace_properties_typeProperties_existingClusterId')]"
 					}
 				}
 			},
