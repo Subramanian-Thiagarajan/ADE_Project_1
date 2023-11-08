@@ -14,4 +14,8 @@
 
 3. Go to workspace, and create a notebook to mount adls in DBW
    
-5. Create Silver and Gold ADLS and apply the transformations as shown in the dbw-code-folder
+4. Create Silver and Gold ADLS and apply the transformations as shown in the dbw-code-folder
+
+5. Create a pipeline in ADF and attach the notebooks to run in the pipeline
+
+   ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/e377fd49-8d8e-4b40-9747-e92e9a095bf2)
