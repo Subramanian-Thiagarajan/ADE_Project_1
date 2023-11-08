@@ -11,6 +11,10 @@
 3. Create a Key Vault - kv-ade-project
 
    ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/30ae4ba4-95f1-457b-806e-08c72dd23cba)
+   
+- Access policy setup
+
+  ![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/77d4b59a-0f62-4e8e-9e71-554092920bfa)
 
 - Add the SQL Server credentials in the key vault secrets
 
