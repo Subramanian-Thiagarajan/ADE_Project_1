@@ -1,0 +1,10 @@
+{
+	"name": "linked_service_key_vault",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-ade-project.vault.azure.net/"
+		}
+	}
+}
