@@ -8,3 +8,5 @@
 4. Loading - Azure Synapse Analytics
 
 Source - Official SalesLT Microsoft table loaded into Azure SQL DB
+
+![image](https://github.com/Subramanian-Thiagarajan/ADE_Project_1/assets/96657323/4f5493b4-7750-4fde-b173-2124c717747e)
